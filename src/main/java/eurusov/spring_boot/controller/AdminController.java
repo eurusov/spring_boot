@@ -26,7 +26,7 @@ public class AdminController {
     }
 
     @GetMapping
-    public String showUserListForAdmin(Model model, Principal principal) {
+    public String adminHome(Model model, Principal principal) {
         List<User> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         User loggedUser = userService.getUserByUsername(principal.getName());
@@ -42,7 +42,7 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateEditedUser(@ModelAttribute("user") User user) {
+    public String updateUser(@ModelAttribute("user") User user) {
         userService.updateUser(user);
         return "redirect:/admin";
     }
