@@ -52,27 +52,27 @@
                             <tbody>
                             <tr>
                                 <th scope="row" class="col-md-3">Id:</th>
-                                <td><span th:text="${loggedUser.userId}"></span></td>
+                                <td th:text="${loggedUser.userId}">-1</td>
                             </tr>
                             <tr>
                                 <th scope="row">Username:</th>
-                                <td><span th:text="${loggedUser.username}"></span></td>
+                                <td th:text="${loggedUser.username}">nonexistent</td>
                             </tr>
                             <tr>
                                 <th scope="row">First Name:</th>
-                                <td><span th:text="${loggedUser.firstName}"></span></td>
+                                <td th:text="${loggedUser.firstName}">John</td>
                             </tr>
                             <tr>
                                 <th scope="row">Last Name:</th>
-                                <td><span th:text="${loggedUser.lastName}"></span></td>
+                                <td th:text="${loggedUser.lastName}">Doe</td>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail:</th>
-                                <td><span th:text="${loggedUser.email}"></span></td>
+                                <td th:text="${loggedUser.email}">do.not@email.me</td>
                             </tr>
                             <tr>
                                 <th scope="row">Role:</th>
-                                <td><p th:text="${loggedUser.getRole()}"></p></td>
+                                <td th:text="${loggedUser.getRole()}">nobody</td>
                             </tr>
                             </tbody>
                         </table>

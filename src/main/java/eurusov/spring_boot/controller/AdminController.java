@@ -30,8 +30,8 @@ public class AdminController {
         List<User> userList = userService.getUserList();
         model.addAttribute("userList", userList);
         User loggedUser = userService.getUserByUsername(principal.getName());
-        model.addAttribute("principal", loggedUser);
-        return "admin/admin";
+        model.addAttribute("loggedUser", loggedUser);
+        return "admin";
     }
 
     @PostMapping("/saveNewUser")
