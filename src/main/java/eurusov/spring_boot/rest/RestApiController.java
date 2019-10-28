@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class RestApiController {
+
     private UserService userService;
 
     @Autowired
@@ -39,6 +40,14 @@ public class RestApiController {
             return userService.getUserByUsername(user.getUsername());
         }
         return null;  // User with the same name already exist.
+    }
+
+    @PutMapping("/update")
+    public User updateUser(@RequestBody User user) {
+        if (userService.updateUser(user)) {
+            return userService.getUserByUsername(user.getUsername());
+        }
+        return null;  // Can not update non-existing user.
     }
 
     @DeleteMapping("delete/{username}")
