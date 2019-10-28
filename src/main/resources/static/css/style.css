@@ -29,14 +29,14 @@ body {
     margin: 0 auto;
 }
 
-.btn,
+.formButton,
 .form-control::placeholder,
 .form-signin-heading {
     text-transform: uppercase;
     letter-spacing: 3px;
 }
 
-.btn,
+.formButton,
 .form-control::placeholder {
     font-size: smaller;
 }

@@ -13,20 +13,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-        $(function () {
-            $("#editEditDialog").on('show.bs.modal', function (event) {
-                var button = $(event.relatedTarget); // Button that triggered the modal
-                $(this).find('#modalUserId').val(button.data('user-id'));
-                $(this).find('#hiddenUsername').val(button.data('username'));
-                $(this).find('#modalUsername').val(button.data('username'));
-                $(this).find('#modalFirstName').val(button.data('first-name'));
-                $(this).find('#modalLastName').val(button.data('last-name'));
-                $(this).find('#modalEmail').val(button.data('email'));
-                $(this).find('#modalRole').val(button.data('role'));
-            });
-        });
-    </script>
+    <script type="text/javascript" src="js/admin.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -82,7 +69,7 @@
                             <div class="container-fluid userListTop">
                                 <h4>All users</h4>
                             </div>
-                            <table class="table table-striped border">
+                            <table class="table table-striped border" id="userTable" style="display: none">
                                 <thead>
                                 <tr>
                                     <th scope="col">Id</th>
@@ -110,7 +97,7 @@
                                             <!-- Button to Open the Modal -->
                                             <button type="button"
                                                     class="btn btn-block btn-link p-0 tableBtn"
-                                                    data-toggle="modal" data-target="#editEditDialog"
+                                                    data-toggle="modal" data-target="#modalEditDialog"
                                                     th:data-user-id="${user.userId}"
                                                     th:data-username="${user.username}"
                                                     th:data-first-name="${user.firstName}"
@@ -134,7 +121,7 @@
                             </table>
 
                             <!-- The Modal -->
-                            <div class="modal fade" id="editEditDialog" tabindex="-1" role="dialog">
+                            <div class="modal fade" id="modalEditDialog" tabindex="-1" role="dialog">
                                 <div class="modal-dialog modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                         <!-- Modal Header -->
@@ -254,9 +241,9 @@
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--        crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
