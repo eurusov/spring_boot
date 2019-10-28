@@ -83,40 +83,6 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="user : ${userList}">
-                                    <th scope="row" th:text="${user.userId}"></th>
-                                    <td th:text="${user.username}">username</td>
-                                    <td th:text="${user.firstName}">John</td>
-                                    <td th:text="${user.lastName}">Doe</td>
-                                    <td th:text="${user.email}">email</td>
-                                    <td th:text="${user.getRole()}">role</td>
-                                    <td>
-                                        <form action="#" method="post"
-                                              class="p-0 m-0 justify-content-center align-items-center">
-                                            <input type="hidden" name="editUsername" value="${user.username}"/>
-                                            <!-- Button to Open the Modal -->
-                                            <button type="button"
-                                                    class="btn btn-block btn-link p-0 tableBtn"
-                                                    data-toggle="modal" data-target="#modalEditDialog"
-                                                    th:data-user-id="${user.userId}"
-                                                    th:data-username="${user.username}"
-                                                    th:data-first-name="${user.firstName}"
-                                                    th:data-last-name="${user.lastName}"
-                                                    th:data-email="${user.email}"
-                                                    th:data-role="${user.getRole()}">
-                                                <i class="fa fa-edit tableBtn"></i>
-                                            </button>
-                                        </form>
-                                    </td>
-                                    <td>
-                                        <form th:action="@{/admin/delete}" method="POST"
-                                              class="p-0 m-0 justify-content-center align-items-center">
-                                            <input type="hidden" name="deleteUser" th:value="${user.username}"/>
-                                            <button type="submit" class="btn btn-block btn-link p-0 tableBtn"><i
-                                                    class="fa fa-trash tableBtn"></i></button>
-                                        </form>
-                                    </td>
-                                </tr>
                                 </tbody>
                             </table>
 
@@ -131,7 +97,7 @@
                                         </div>
                                         <!-- Modal body -->
                                         <div class="modal-body px-4">
-                                            <form th:action="@{/admin/update}" method="POST">
+                                            <form>
                                                 <input type="text" class="form-control formFields"
                                                        id="hiddenUsername" name="username" hidden>
                                                 <label for="modalUserId">Id:</label>
@@ -152,7 +118,8 @@
                                                 <label for="modalRole">Role:</label>
                                                 <input type="text" class="form-control formFields"
                                                        id="modalRole" name="role" autocomplete="off">
-                                                <button type="submit" class="btn btn-primary btn-block mt-5 mb-3">Save
+                                                <button type="button" class="btn btn-primary btn-block mt-5 mb-3"
+                                                        id="modalSubmitBtn" onclick="onModalSubmitBtn()">Save
                                                 </button>
                                             </form>
                                         </div>

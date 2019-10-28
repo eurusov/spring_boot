@@ -4,9 +4,7 @@ function loadUserList() {
     $.ajax({
         url: '/api/list',
         method: "GET",
-        success: function (result) {
-            fillUserTable(result);
-        }
+        success: fillUserTable
     });
 }
 
@@ -15,28 +13,26 @@ function loadUser(username, callback) {
         url: '/api/user/' + username,
         method: "GET",
         success: callback
-    })
+    });
 }
 
-function fillModalFields(user) {
+function showModal(user) {
     var modalDiv = $("#modalEditDialog");
-    modalDiv.find('#modalUserId').val(user.userId);
-    modalDiv.find('#hiddenUsername').val(user.username);
-    modalDiv.find('#modalUsername').val(user.username);
-    modalDiv.find('#modalFirstName').val(user.firstName);
-    modalDiv.find('#modalLastName').val(user.lastName);
-    modalDiv.find('#modalEmail').val(user.email);
-    modalDiv.find('#modalRole').val(user.role);
+    modalDiv.on('show.bs.modal', function () {
+        modalDiv.find('#modalUserId').val(user.userId);
+        modalDiv.find('#hiddenUsername').val(user.username);
+        modalDiv.find('#modalUsername').val(user.username);
+        modalDiv.find('#modalFirstName').val(user.firstName);
+        modalDiv.find('#modalLastName').val(user.lastName);
+        modalDiv.find('#modalEmail').val(user.email);
+        modalDiv.find('#modalRole').val(user.role);
+    });
+    modalDiv.modal('show');
 }
 
 function onEditClick() {
     var username = this.getAttribute('data-id');
-    var modalDiv = $("#modalEditDialog");
-    modalDiv.on('show.bs.modal', function () {
-        loadUser(username, fillModalFields);
-    });
-
-    modalDiv.modal();
+    loadUser(username, showModal);
 }
 
 function onDeleteClick() {
@@ -56,19 +52,21 @@ function fillUserTable(users) {
     table.hide();
     table.find("tbody tr").remove();
     $.each(users, function (index, value) {
-        table.append("<tr><td>"
+        table.append("<tr id='_tr_" + value.username + "'>"
+            + "<td id='_td_userId_" + value.username + "'>"
             + value.userId
-            + "</td><td>"
+            + "</td><td id='_td_username_" + value.username + "'>"
             + value.username
-            + "</td><td>"
+            + "</td><td id='_td_firstName_" + value.username + "'>"
             + value.firstName
-            + "</td><td>"
+            + "</td><td id='_td_lastName_" + value.username + "'>"
             + value.lastName
-            + "</td><td>"
+            + "</td><td id='_td_email_" + value.username + "'>"
             + value.email
-            + "</td><td>"
+            + "</td><td id='_td_role_" + value.username + "'>"
             + value.role
-            + "</td><td class='px-0' style='width: 64px'>"
+            + "</td>"
+            + "<td class='px-0' style='width: 64px'>"
             + "<button type='button' class='btn btn-link btn-block py-0 usrEditBtn' data-id='" + value.username
             + "'><i class='fa fa-edit'></i></button>"
             + "</td><td class='pl-0' style='width: 64px'>"
@@ -81,3 +79,40 @@ function fillUserTable(users) {
     $('.usrDeleteBtn').click(onDeleteClick);
     table.show();
 }
+
+function updateUser(user, callback) {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: "/api/update",
+        data: JSON.stringify(user),
+        dataType: 'json',
+        success: callback
+        // dataType: JSON
+    });
+}
+
+function onModalSubmitBtn() {
+    var modalDiv = $("#modalEditDialog");
+    var user = {
+        userId: modalDiv.find('#modalUserId').val(),
+        username: modalDiv.find('#modalUsername').val(),
+        firstName: modalDiv.find('#modalFirstName').val(),
+        lastName: modalDiv.find('#modalLastName').val(),
+        email: modalDiv.find('#modalEmail').val(),
+        role: modalDiv.find('#modalRole').val()
+    };
+    modalDiv.modal('hide');
+    updateUser(user, onUpdateUserSuccess);
+}
+
+function onUpdateUserSuccess(user) {
+    var table = $('#userTable');
+    table.find('#_td_userId_' + user.username).text(user.userId);
+    // table.find('#_td_username_' + user.username).text(user.username);
+    table.find('#_td_firstName_' + user.username).text(user.firstName);
+    table.find('#_td_lastName_' + user.username).text(user.lastName);
+    table.find('#_td_email_' + user.username).text(user.email);
+    table.find('#_td_role_' + user.username).text(user.role);
+}
+
