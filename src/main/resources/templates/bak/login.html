@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Boot Application</title>
+
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+
+</head>
+<body class="text-center loginBody">
+<form th:action="@{/login}" method="POST" class="form-signin">
+    <h5 class="form-signin-heading mb-2 pl-3 text-muted">Please sign in...</h5>
+    <br/>
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <div class="input-group-text"><i
+                    class="fa fa-user text-muted"></i></div>
+        </div>
+        <input type="text" id="username" name="username" th:placeholder="username"
+               class="form-control"/>
+    </div>
+    <div class="input-group mb-4">
+        <div class="input-group-prepend">
+            <div class="input-group-text"><i
+                    class="fa fa-unlock text-muted"></i></div>
+        </div>
+        <input type="password" th:placeholder="password"
+               id="password" name="password" class="form-control"/> <br/>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block mb-5" name="Submit" value="Login" type="Submit"
+            th:text="Login">
+    </button>
+</form>
+</body>
+</html>
