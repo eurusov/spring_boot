@@ -12,7 +12,8 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/user.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -48,31 +49,31 @@
                         <h2>Your profile details</h2>
                     </div>
                     <div class="p-3 pr-5">
-                        <table class="table table-striped border m-2 mr-5">
+                        <table id="principalTable" class="table table-striped border m-2 mr-5">
                             <tbody>
                             <tr>
                                 <th scope="row" class="col-md-3">Id:</th>
-                                <td th:text="${loggedUser.userId}">-1</td>
+                                <td id="loggedUserId"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Username:</th>
-                                <td th:text="${loggedUser.username}">nonexistent</td>
+                                <td id="loggedUsername"></td>
                             </tr>
                             <tr>
                                 <th scope="row">First Name:</th>
-                                <td th:text="${loggedUser.firstName}">John</td>
+                                <td id="loggedUserFirstName"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Last Name:</th>
-                                <td th:text="${loggedUser.lastName}">Doe</td>
+                                <td id="loggedUserLastName"></td>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail:</th>
-                                <td th:text="${loggedUser.email}">do.not@email.me</td>
+                                <td id="loggedUserEmail"></td>
                             </tr>
                             <tr>
                                 <th scope="row">Role:</th>
-                                <td th:text="${loggedUser.getRole()}">nobody</td>
+                                <td id="loggedUserRole"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -84,9 +85,9 @@
 </div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
+<!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
+<!--        crossorigin="anonymous"></script>-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>

@@ -55,10 +55,12 @@
                             <a class="nav-link disabled"></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#userListTabPane" id="userListTab">User table</a>
+                            <a class="nav-link active" data-toggle="tab"
+                               href="#userListTabPane" id="userListTab">User table</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#newUserTabPane" id="newUserTab">New user</a>
+                            <a class="nav-link" data-toggle="tab"
+                               href="#newUserTabPane" id="newUserTab">New user</a>
                         </li>
                     </ul>
                     <!--Tab panes-->
@@ -174,31 +176,31 @@
                         <h2>Your profile details</h2>
                     </div>
                     <div class="p-3 pr-5">
-                        <table class="table table-striped border m-2 mr-5">
+                        <table id="principalTable" class="table table-striped border m-2 mr-5">
                             <tbody>
                             <tr>
                                 <th scope="row" class="col-md-3">Id:</th>
-                                <td th:text="${loggedUser.userId}">-1</td>
+                                <td id="loggedUserId">-1</td>
                             </tr>
                             <tr>
                                 <th scope="row">Username:</th>
-                                <td th:text="${loggedUser.username}">nonexistent</td>
+                                <td id="loggedUsername">nonexistent</td>
                             </tr>
                             <tr>
                                 <th scope="row">First Name:</th>
-                                <td th:text="${loggedUser.firstName}">John</td>
+                                <td id="loggedUserFirstName">John</td>
                             </tr>
                             <tr>
                                 <th scope="row">Last Name:</th>
-                                <td th:text="${loggedUser.lastName}">Doe</td>
+                                <td id="loggedUserLastName">Doe</td>
                             </tr>
                             <tr>
                                 <th scope="row">E-mail:</th>
-                                <td th:text="${loggedUser.email}">do.not@email.me</td>
+                                <td id="loggedUserEmail">do.not@email.me</td>
                             </tr>
                             <tr>
                                 <th scope="row">Role:</th>
-                                <td th:text="${loggedUser.getRole()}">nobody</td>
+                                <td id="loggedUserRole">nobody</td>
                             </tr>
                             </tbody>
                         </table>

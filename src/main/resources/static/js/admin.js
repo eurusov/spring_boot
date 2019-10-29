@@ -1,9 +1,18 @@
-$(document).ready(loadUserList);
+$.getScript('/js/func.js', function () {
+});
+
+$(document).ready(function () {
+        loadUserList();
+        $.ajax({
+            url: '/api/user',
+            success: fillPrincipalTable // function from func.js
+        });
+    }
+);
 
 function loadUserList() {
     $.ajax({
         url: '/api/list',
-        // method: "GET",
         success: fillUserTable
     });
 }
@@ -11,7 +20,6 @@ function loadUserList() {
 function loadUser(username, callback) {
     $.ajax({
         url: '/api/user/' + username,
-        // method: "GET",
         success: callback
     });
 }
