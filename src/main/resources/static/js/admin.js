@@ -3,7 +3,7 @@ $(document).ready(loadUserList);
 function loadUserList() {
     $.ajax({
         url: '/api/list',
-        method: "GET",
+        // method: "GET",
         success: fillUserTable
     });
 }
@@ -11,7 +11,29 @@ function loadUserList() {
 function loadUser(username, callback) {
     $.ajax({
         url: '/api/user/' + username,
-        method: "GET",
+        // method: "GET",
+        success: callback
+    });
+}
+
+function saveNewUser(user, callback) {
+    $.ajax({
+        type: "POST",
+        contentType: "application/json",
+        url: "/api/add",
+        data: JSON.stringify(user),
+        dataType: 'json',
+        success: callback
+    });
+}
+
+function updateUser(user, callback) {
+    $.ajax({
+        type: "PUT",
+        contentType: "application/json",
+        url: "/api/update",
+        data: JSON.stringify(user),
+        dataType: 'json',
         success: callback
     });
 }
@@ -35,6 +57,51 @@ function onEditClick() {
     loadUser(username, showModal);
 }
 
+function onSaveNewClick() {
+    var form = $("#newUserForm");
+    var user = {
+        username: form.find('#username').val(),
+        password: form.find('#password').val(),
+        firstName: form.find('#firstName').val(),
+        lastName: form.find('#lastName').val(),
+        email: form.find('#email').val(),
+        role: form.find('#role').val()
+    };
+    form.find('.formFields').val("");
+    saveNewUser(user, function (newUser) {
+        tableAppendRow(newUser);
+        $('.usrEditBtn').click(onEditClick);
+        $('.usrDeleteBtn').click(onDeleteClick);
+    });
+    $('#userListTab').tab('show');
+}
+
+function tableAppendRow(user) {
+    var table = $('#userTable');
+    table.append("<tr id='_tr_" + user.username + "'>"
+        + "<td id='_td_userId_" + user.username + "'>"
+        + user.userId
+        + "</td><td id='_td_username_" + user.username + "'>"
+        + user.username
+        + "</td><td id='_td_firstName_" + user.username + "'>"
+        + user.firstName
+        + "</td><td id='_td_lastName_" + user.username + "'>"
+        + user.lastName
+        + "</td><td id='_td_email_" + user.username + "'>"
+        + user.email
+        + "</td><td id='_td_role_" + user.username + "'>"
+        + user.role
+        + "</td>"
+        + "<td class='px-0' style='width: 64px'>"
+        + "<button type='button' class='btn btn-link btn-block py-0 usrEditBtn' data-id='" + user.username
+        + "'><i class='fa fa-edit'></i></button>"
+        + "</td><td class='pl-0' style='width: 64px'>"
+        + "<button type='button' class='btn btn-link btn-block py-0 usrDeleteBtn' data-id='" + user.username
+        + "'><i class='fa fa-trash'></i></button>"
+        + "</td></tr>"
+    );
+}
+
 function onDeleteClick() {
     var username = this.getAttribute('data-id');
     var row = $(this).parent().parent();
@@ -51,45 +118,12 @@ function fillUserTable(users) {
     var table = $('#userTable');
     table.hide();
     table.find("tbody tr").remove();
-    $.each(users, function (index, value) {
-        table.append("<tr id='_tr_" + value.username + "'>"
-            + "<td id='_td_userId_" + value.username + "'>"
-            + value.userId
-            + "</td><td id='_td_username_" + value.username + "'>"
-            + value.username
-            + "</td><td id='_td_firstName_" + value.username + "'>"
-            + value.firstName
-            + "</td><td id='_td_lastName_" + value.username + "'>"
-            + value.lastName
-            + "</td><td id='_td_email_" + value.username + "'>"
-            + value.email
-            + "</td><td id='_td_role_" + value.username + "'>"
-            + value.role
-            + "</td>"
-            + "<td class='px-0' style='width: 64px'>"
-            + "<button type='button' class='btn btn-link btn-block py-0 usrEditBtn' data-id='" + value.username
-            + "'><i class='fa fa-edit'></i></button>"
-            + "</td><td class='pl-0' style='width: 64px'>"
-            + "<button type='button' class='btn btn-link btn-block py-0 usrDeleteBtn' data-id='" + value.username
-            + "'><i class='fa fa-trash'></i></button>"
-            + "</td></tr>"
-        );
+    $.each(users, function (index, user) {
+        tableAppendRow(user);
     });
     $('.usrEditBtn').click(onEditClick);
     $('.usrDeleteBtn').click(onDeleteClick);
     table.show();
-}
-
-function updateUser(user, callback) {
-    $.ajax({
-        type: "PUT",
-        contentType: "application/json",
-        url: "/api/update",
-        data: JSON.stringify(user),
-        dataType: 'json',
-        success: callback
-        // dataType: JSON
-    });
 }
 
 function onModalSubmitBtn() {
