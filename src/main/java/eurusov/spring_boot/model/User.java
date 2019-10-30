@@ -1,5 +1,6 @@
 package eurusov.spring_boot.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -41,20 +42,15 @@ public class User implements UserDetails {
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    private Set<Authorities> authorities = new HashSet<>();
+    private Set<Authority> authorities = new HashSet<>();
 
-
-    /* Used in JSP`s */
-    public String getRole() {
-        String role = "USER";
-        for (Authorities authority : authorities) {
-            if (authority.getAuthority().equals("ROLE_ADMIN")) {
-                role = "ADMIN";
-                break;
-            }
-        }
-        return role;
+    /* Used in views */
+    public Role getRole() {
+        return authorities.stream()
+                .anyMatch(authority -> authority.getAuthority()
+                        .equals(Role.ADMIN.getAuthorityString())) ? Role.ADMIN : Role.USER;
     }
 
     // ~ Implements UserDetails

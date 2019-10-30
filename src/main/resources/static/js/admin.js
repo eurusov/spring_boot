@@ -1,7 +1,14 @@
-$.getScript('/js/func.js', function () {
-});
+import {fillPrincipalTable} from '/js/func.js';
+
+// $.getScript('/js/func.js', function () {
+// });
+
+// window.onSaveNewClick = onSaveNewClick;
 
 $(document).ready(function () {
+        $("#newUserForm").validate({
+            submitHandler: onSaveNewClick
+        });
         loadUserList();
         $.ajax({
             url: '/api/user',
@@ -47,7 +54,8 @@ function updateUser(user, callback) {
 }
 
 function showModal(user) {
-    var modalDiv = $("#modalEditDialog");
+    console.log(user);
+    let modalDiv = $("#modalEditDialog");
     modalDiv.on('show.bs.modal', function () {
         modalDiv.find('#modalUserId').val(user.userId);
         modalDiv.find('#hiddenUsername').val(user.username);
@@ -61,58 +69,50 @@ function showModal(user) {
 }
 
 function onEditClick() {
-    var username = this.getAttribute('data-id');
+    let username = this.getAttribute('data-id');
     loadUser(username, showModal);
 }
 
 function onSaveNewClick() {
-    var form = $("#newUserForm");
-    var user = {
-        username: form.find('#username').val(),
-        password: form.find('#password').val(),
-        firstName: form.find('#firstName').val(),
-        lastName: form.find('#lastName').val(),
-        email: form.find('#email').val(),
-        role: form.find('#role').val()
-    };
-    form.find('.formFields').val("");
+    let newUserForm = $("#newUserForm");
+    let user = getUserFromForm(newUserForm);
+    // console.log(user);
     saveNewUser(user, function (newUser) {
         tableAppendRow(newUser);
         $('.usrEditBtn').click(onEditClick);
         $('.usrDeleteBtn').click(onDeleteClick);
+        newUserForm[0].reset();
     });
     $('#userListTab').tab('show');
 }
 
 function tableAppendRow(user) {
-    var table = $('#userTable');
-    table.append("<tr id='_tr_" + user.username + "'>"
-        + "<td id='_td_userId_" + user.username + "'>"
-        + user.userId
-        + "</td><td id='_td_username_" + user.username + "'>"
-        + user.username
-        + "</td><td id='_td_firstName_" + user.username + "'>"
-        + user.firstName
-        + "</td><td id='_td_lastName_" + user.username + "'>"
-        + user.lastName
-        + "</td><td id='_td_email_" + user.username + "'>"
-        + user.email
-        + "</td><td id='_td_role_" + user.username + "'>"
-        + user.role
-        + "</td>"
-        + "<td class='px-0' style='width: 64px'>"
-        + "<button type='button' class='btn btn-link btn-block py-0 usrEditBtn' data-id='" + user.username
-        + "'><i class='fa fa-edit'></i></button>"
-        + "</td><td class='pl-0' style='width: 64px'>"
-        + "<button type='button' class='btn btn-link btn-block py-0 usrDeleteBtn' data-id='" + user.username
-        + "'><i class='fa fa-trash'></i></button>"
-        + "</td></tr>"
+    let table = $('#userTable');
+    table.append(
+        `<tr id='_tr_${user.username}'>
+    <td id='_td_userId_${user.username}'>${user.userId}</td>
+    <td id='_td_username_${user.username}'>${user.username}</td>
+    <td id='_td_firstName_${user.username}'>${user.firstName}</td>
+    <td id='_td_lastName_${user.username}'>${user.lastName}</td>
+    <td id='_td_email_${user.username}'>${user.email}</td>
+    <td id='_td_role_${user.username}'>${user.role}</td>
+    <td class='px-0' style='width: 64px'>
+        <button type='button' class='btn btn-link btn-block py-0 usrEditBtn' data-id='${user.username}'>
+            <i class='fa fa-edit'></i>
+        </button>
+    </td>
+    <td class='pl-0' style='width: 64px'>
+        <button type='button' class='btn btn-link btn-block py-0 usrDeleteBtn' data-id='${user.username}'>
+            <i class='fa fa-trash'></i>
+        </button>
+    </td>
+</tr>`
     );
 }
 
 function onDeleteClick() {
-    var username = this.getAttribute('data-id');
-    var row = $(this).parent().parent();
+    let username = this.getAttribute('data-id');
+    let row = $(this).parent().parent();
     $.ajax({
         url: '/api/delete/' + username,
         method: "DELETE",
@@ -123,7 +123,7 @@ function onDeleteClick() {
 }
 
 function fillUserTable(users) {
-    var table = $('#userTable');
+    let table = $('#userTable');
     table.hide();
     table.find("tbody tr").remove();
     $.each(users, function (index, user) {
@@ -134,9 +134,21 @@ function fillUserTable(users) {
     table.show();
 }
 
+function getUserFromForm(form) {
+    return {
+        userId: form.find("input[name='userId']").val(),
+        username: form.find("input[name='username']").val(),
+        password: form.find("input[name='password']").val(),
+        firstName: form.find("input[name='firstName']").val(),
+        lastName: form.find("input[name='lastName']").val(),
+        email: form.find("input[name='email']").val(),
+        role: form.find("select[name='role']").val()
+    };
+}
+
 function onModalSubmitBtn() {
-    var modalDiv = $("#modalEditDialog");
-    var user = {
+    let modalDiv = $("#modalEditDialog");
+    let user = {
         userId: modalDiv.find('#modalUserId').val(),
         username: modalDiv.find('#modalUsername').val(),
         firstName: modalDiv.find('#modalFirstName').val(),
@@ -149,7 +161,7 @@ function onModalSubmitBtn() {
 }
 
 function onUpdateUserSuccess(user) {
-    var table = $('#userTable');
+    let table = $('#userTable');
     table.find('#_td_userId_' + user.username).text(user.userId);
     // table.find('#_td_username_' + user.username).text(user.username);
     table.find('#_td_firstName_' + user.username).text(user.firstName);
@@ -157,4 +169,3 @@ function onUpdateUserSuccess(user) {
     table.find('#_td_email_' + user.username).text(user.email);
     table.find('#_td_role_' + user.username).text(user.role);
 }
-

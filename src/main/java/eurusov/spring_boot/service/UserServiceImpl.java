@@ -1,6 +1,6 @@
 package eurusov.spring_boot.service;
 
-import eurusov.spring_boot.model.Authorities;
+import eurusov.spring_boot.model.Authority;
 import eurusov.spring_boot.model.User;
 import eurusov.spring_boot.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsById(user.getUsername())) {
             return false;
         }
-        Authorities authority = new Authorities(user);
+        Authority authority = new Authority(user);
         authority.setAuthority("ROLE_USER");
         user.getAuthorities().add(authority);
         userRepository.save(user);

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Authorities implements GrantedAuthority {
+public class Authority implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,24 @@ public class Authorities implements GrantedAuthority {
     private User user;
 
     // Constructor
-    public Authorities(User user) {
+    public Authority(User user) {
         this.user = user;
     }
+
+    // Constructor
+    public Authority(String authority) {
+        this.authority = authority;
+    }
+
+    // Constructor
+    public Authority(Role role) {
+        this.authority = role.getAuthorityString();
+    }
+
+    // Constructor
+    public Authority(User user, Role role) {
+        this.user = user;
+        this.authority = role.getAuthorityString();
+    }
+
 }

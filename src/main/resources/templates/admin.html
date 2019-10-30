@@ -13,7 +13,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/admin.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script type="module" src="js/admin.js"></script>
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -158,11 +159,13 @@
                                         <input type="email" class="form-control formFields" id="email"
                                                placeholder="E-mail" name="email" autocomplete="off">
                                         <label for="role">User role:</label>
-                                        <input type="text" class="form-control formFields" id="role" placeholder="Role"
-                                               name="role" autocomplete="off">
-                                        <button type="button" class="btn btn-primary px-5 mt-4"
-                                                id="saveNewUserBtn" onclick="onSaveNewClick()">Submit
-                                        </button>
+                                        <select class="form-control formFields" id="role" name="role">
+                                            <option value="USER">USER</option>
+                                            <option value="ADMIN">ADMIN</option>
+                                        </select>
+                                        <!--                                        <input type="text" class="form-control formFields" id="role" placeholder="Role"-->
+                                        <!--                                               name="role" autocomplete="off">-->
+                                        <button type="submit" class="btn btn-primary px-5 mt-4">Submit</button>
                                     </div>
                                 </form>
                             </div>

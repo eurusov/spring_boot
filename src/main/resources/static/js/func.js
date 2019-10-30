@@ -1,5 +1,5 @@
-function fillPrincipalTable(user) {
-    var table = $('#principalTable');
+export function fillPrincipalTable(user) {
+    let table = $('#principalTable');
     table.find('#loggedUserId').text(user.userId);
     table.find('#loggedUsername').text(user.username);
     table.find('#loggedUserFirstName').text(user.firstName);

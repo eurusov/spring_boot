@@ -1,5 +1,7 @@
-$.getScript('/js/func.js', function () {
-});
+import {fillPrincipalTable} from '/js/func.js';
+
+// $.getScript('/js/func.js', function () {
+// });
 
 $(document).ready(function () {
         $.ajax({
