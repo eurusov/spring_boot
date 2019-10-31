@@ -17,7 +17,7 @@ import java.util.Set;
 public class User implements UserDetails {
     // ~ Instance fields
     // ================================================================================================
-    @Column(name = "user_id")
+    @Column(name = "user_id", unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long userId;

@@ -1,14 +1,38 @@
-import {fillPrincipalTable} from '/js/func.js';
+import {fillPrincipalTable} from "/js/func.js";
 
 // $.getScript('/js/func.js', function () {
 // });
 
+// (function() {
+//     'use strict';
+//     window.addEventListener('load', function() {
+//         // Fetch all the forms we want to apply custom Bootstrap validation styles to
+//         let forms = document.getElementsByClassName('needs-validation');
+//         // Loop over them and prevent submission
+//         let validation = Array.prototype.filter.call(forms, function(form) {
+//             form.addEventListener('submit', function(event) {
+//                 console.log("submit");
+//                 if (form.checkValidity() === false) {
+//                     event.preventDefault();
+//                     event.stopPropagation();
+//                 }
+//                 form.classList.add('was-validated');
+//             }, false);
+//         });
+//     }, false);
+// })();
+
 // window.onSaveNewClick = onSaveNewClick;
 
 $(document).ready(function () {
-        $("#newUserForm").validate({
-            submitHandler: onSaveNewClick
+        $("#newUserForm").on("submit", function (event) {
+            event.preventDefault();
+            if (this.checkValidity() === true) {
+                onSaveNewClick();
+            }
+            this.classList.add("was-validated");
         });
+
         loadUserList();
         $.ajax({
             url: '/api/user',
@@ -82,6 +106,7 @@ function onSaveNewClick() {
         $('.usrEditBtn').click(onEditClick);
         $('.usrDeleteBtn').click(onDeleteClick);
         newUserForm[0].reset();
+        newUserForm.removeClass("was-validated");
     });
     $('#userListTab').tab('show');
 }

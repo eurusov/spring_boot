@@ -12,9 +12,8 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-    <script type="module" src="js/admin.js"></script>
+    <!--    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>-->
+    <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>-->
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -101,25 +100,25 @@
                                         <!-- Modal body -->
                                         <div class="modal-body px-4">
                                             <form>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="hiddenUsername" name="username" hidden>
                                                 <label for="modalUserId">Id:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalUserId" name="userId" disabled>
                                                 <label for="modalUsername">Username:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalUsername" disabled>
                                                 <label for="modalFirstName">First name:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalFirstName" name="firstName" autocomplete="off">
                                                 <label for="modalLastName">Last name:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalLastName" name="lastName" autocomplete="off">
                                                 <label for="modalEmail">E-mail:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalEmail" name="email" autocomplete="off">
                                                 <label for="modalRole">Role:</label>
-                                                <input type="text" class="form-control formFields"
+                                                <input type="text" class="form-control"
                                                        id="modalRole" name="role" autocomplete="off">
                                                 <button type="button" class="btn btn-primary btn-block mt-5 mb-3"
                                                         id="modalSubmitBtn" onclick="onModalSubmitBtn()">Save
@@ -141,29 +140,51 @@
                             <div class="container-fluid userListTop col-6 float-left">
                                 <h4>Add new user</h4>
                                 <!--New user form-->
-                                <form id="newUserForm">
+                                <form id="newUserForm" class="needs-validation" novalidate>
                                     <div class="form-group">
                                         <label for="username">Username:</label>
-                                        <input type="text" class="form-control formFields" id="username"
-                                               placeholder="Username" name="username" required autocomplete="off">
+                                        <input type="text" class="form-control" id="username" name="username"
+                                               placeholder="Username" autocomplete="off"
+                                               required minlength="3" maxlength="25">
+                                        <div class="invalid-feedback">
+                                            Please enter a username, 3 to 25 characters long.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="password">Password:</label>
-                                        <input type="password" class="form-control formFields" id="password"
-                                               placeholder="Password" name="password" required>
+                                        <input type="password" class="form-control" id="password" name="password"
+                                               placeholder="Password" required maxlength="25">
+                                        <div class="invalid-feedback">
+                                            Please enter a password, 1 to 25 characters long.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="firstName">First name:</label>
-                                        <input type="text" class="form-control formFields" id="firstName"
-                                               placeholder="First name" name="firstName" autocomplete="off">
+                                        <input type="text" class="form-control" id="firstName" name="firstName"
+                                               placeholder="First name" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="lastName">Last name:</label>
-                                        <input type="text" class="form-control formFields" id="lastName"
-                                               placeholder="Last name" name="lastName" autocomplete="off">
-                                        <label for="email">E-mail:</label>
-                                        <input type="email" class="form-control formFields" id="email"
-                                               placeholder="E-mail" name="email" autocomplete="off">
+                                        <input type="text" class="form-control" id="lastName" name="lastName"
+                                               placeholder="Last name" autocomplete="off">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">Email:</label>
+                                        <input type="email" class="form-control" id="email" name="email"
+                                               placeholder="Email" autocomplete="off" required>
+                                        <div class="invalid-feedback">
+                                            Please enter a valid email address.
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <label for="role">User role:</label>
-                                        <select class="form-control formFields" id="role" name="role">
+                                        <select class="form-control" id="role" name="role">
                                             <option value="USER">USER</option>
                                             <option value="ADMIN">ADMIN</option>
                                         </select>
-                                        <!--                                        <input type="text" class="form-control formFields" id="role" placeholder="Role"-->
+                                    </div>
+                                    <div class="form-group">
+                                        <!--                                        <input type="text" class="form-control" id="role" placeholder="Role"-->
                                         <!--                                               name="role" autocomplete="off">-->
                                         <button type="submit" class="btn btn-primary px-5 mt-4">Submit</button>
                                     </div>
@@ -218,11 +239,16 @@
 <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"-->
 <!--        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"-->
 <!--        crossorigin="anonymous"></script>-->
+<script
+        src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+<script type="module" src="js/admin.js"></script>
 </body>
 </html>
