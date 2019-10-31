@@ -13,8 +13,4 @@ public enum Role {
     public String getAuthorityString() {
         return authorityString;
     }
-
-    public Authority getAuthority() {
-        return new Authority(authorityString);
-    }
 }

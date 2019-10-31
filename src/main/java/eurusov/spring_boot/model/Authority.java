@@ -29,25 +29,15 @@ public class Authority implements GrantedAuthority {
     @JsonIgnore
     private User user;
 
-    // Constructor
-    public Authority(User user) {
-        this.user = user;
-    }
-
-    // Constructor
-    public Authority(String authority) {
-        this.authority = authority;
-    }
-
-    // Constructor
-    public Authority(Role role) {
-        this.authority = role.getAuthorityString();
-    }
+    // Constructor (?)
+//    public Authority(User user) {
+//        this.user = user;
+//        authority = user.getRole().getAuthorityString();
+//    }
 
     // Constructor
     public Authority(User user, Role role) {
         this.user = user;
         this.authority = role.getAuthorityString();
     }
-
 }

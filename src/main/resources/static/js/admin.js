@@ -160,6 +160,11 @@ function fillUserTable(users) {
 }
 
 function getUserFromForm(form) {
+    console.log(form);
+    let sel = form.find("select");
+    console.log(sel);
+    console.log(sel.val());
+
     return {
         userId: form.find("input[name='userId']").val(),
         username: form.find("input[name='username']").val(),

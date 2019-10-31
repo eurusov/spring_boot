@@ -25,9 +25,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsById(user.getUsername())) {
             return false;
         }
-        Authority authority = new Authority(user);
-        authority.setAuthority("ROLE_USER");
-        user.getAuthorities().add(authority);
         userRepository.save(user);
         return true;
     }

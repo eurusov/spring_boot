@@ -41,6 +41,7 @@ public class AdminApiController {
 
     @PostMapping("/add")
     public User addNewUser(@RequestBody User user) {
+        System.out.println(user);
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         if (userService.addUser(user)) {
             return userService.getUserByUsername(user.getUsername());
