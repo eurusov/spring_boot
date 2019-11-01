@@ -33,6 +33,14 @@ $(document).ready(function () {
             this.classList.add("was-validated");
         });
 
+        $("#editUserForm").on("submit", function (event) {
+            event.preventDefault();
+            if (this.checkValidity() === true) {
+                onModalSubmitClick();
+            }
+            this.classList.add("was-validated");
+        });
+
         loadUserList();
         $.ajax({
             url: '/api/user',
@@ -78,7 +86,7 @@ function updateUser(user, callback) {
 }
 
 function showModal(user) {
-    console.log(user);
+    // console.log(user);
     let modalDiv = $("#modalEditDialog");
     modalDiv.on('show.bs.modal', function () {
         modalDiv.find('#modalUserId').val(user.userId);
@@ -97,16 +105,25 @@ function onEditClick() {
     loadUser(username, showModal);
 }
 
+function onModalSubmitClick() {
+    let form = $("#editUserForm");
+    let user = getUserFromForm(form);
+    $("#modalEditDialog").modal("hide");
+    // updateUser(user, onUpdateUserSuccess);
+    updateUser(user, loadUserList);
+}
+
 function onSaveNewClick() {
-    let newUserForm = $("#newUserForm");
-    let user = getUserFromForm(newUserForm);
+    let form = $("#newUserForm");
+    let user = getUserFromForm(form);
     // console.log(user);
     saveNewUser(user, function (newUser) {
-        tableAppendRow(newUser);
-        $('.usrEditBtn').click(onEditClick);
-        $('.usrDeleteBtn').click(onDeleteClick);
-        newUserForm[0].reset();
-        newUserForm.removeClass("was-validated");
+        // tableAppendRow(newUser);
+        // $('.usrEditBtn').click(onEditClick);
+        // $('.usrDeleteBtn').click(onDeleteClick);
+        loadUserList();
+        form[0].reset();
+        form.removeClass("was-validated");
     });
     $('#userListTab').tab('show');
 }
@@ -142,12 +159,14 @@ function onDeleteClick() {
         url: '/api/delete/' + username,
         method: "DELETE",
         success: function () {
-            row.remove();
+            loadUserList()
+            // row.remove();
         }
     });
 }
 
 function fillUserTable(users) {
+    console.log(users);
     let table = $('#userTable');
     table.hide();
     table.find("tbody tr").remove();
@@ -160,10 +179,10 @@ function fillUserTable(users) {
 }
 
 function getUserFromForm(form) {
-    console.log(form);
+    // console.log(form);
     let sel = form.find("select");
-    console.log(sel);
-    console.log(sel.val());
+    // console.log(sel);
+    // console.log(sel.val());
 
     return {
         userId: form.find("input[name='userId']").val(),
@@ -174,20 +193,6 @@ function getUserFromForm(form) {
         email: form.find("input[name='email']").val(),
         role: form.find("select[name='role']").val()
     };
-}
-
-function onModalSubmitBtn() {
-    let modalDiv = $("#modalEditDialog");
-    let user = {
-        userId: modalDiv.find('#modalUserId').val(),
-        username: modalDiv.find('#modalUsername').val(),
-        firstName: modalDiv.find('#modalFirstName').val(),
-        lastName: modalDiv.find('#modalLastName').val(),
-        email: modalDiv.find('#modalEmail').val(),
-        role: modalDiv.find('#modalRole').val()
-    };
-    modalDiv.modal('hide');
-    updateUser(user, onUpdateUserSuccess);
 }
 
 function onUpdateUserSuccess(user) {

@@ -99,30 +99,47 @@
                                         </div>
                                         <!-- Modal body -->
                                         <div class="modal-body px-4">
-                                            <form>
-                                                <input type="text" class="form-control"
-                                                       id="hiddenUsername" name="username" hidden>
-                                                <label for="modalUserId">Id:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalUserId" name="userId" disabled>
-                                                <label for="modalUsername">Username:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalUsername" disabled>
-                                                <label for="modalFirstName">First name:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalFirstName" name="firstName" autocomplete="off">
-                                                <label for="modalLastName">Last name:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalLastName" name="lastName" autocomplete="off">
-                                                <label for="modalEmail">E-mail:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalEmail" name="email" autocomplete="off">
-                                                <label for="modalRole">Role:</label>
-                                                <input type="text" class="form-control"
-                                                       id="modalRole" name="role" autocomplete="off">
-                                                <button type="button" class="btn btn-primary btn-block mt-5 mb-3"
-                                                        id="modalSubmitBtn" onclick="onModalSubmitBtn()">Save
-                                                </button>
+                                            <form id="editUserForm" class="needs-validation" novalidate>
+                                                <div class="form-group">
+                                                    <label for="modalUserId">User Id:</label>
+                                                    <input type="text" class="form-control" id="modalUserId"
+                                                           name="userId" disabled>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modalUsername">Username:</label>
+                                                    <input type="text" class="form-control" id="modalUsername"
+                                                           name="username" disabled>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modalFirstName">First name:</label>
+                                                    <input type="text" class="form-control" id="modalFirstName" name="firstName"
+                                                           placeholder="First name" autocomplete="off">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modalLastName">Last name:</label>
+                                                    <input type="text" class="form-control" id="modalLastName" name="lastName"
+                                                           placeholder="Last name" autocomplete="off">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modalEmail">Email:</label>
+                                                    <input type="email" class="form-control" id="modalEmail" name="email"
+                                                           placeholder="Email" autocomplete="off" required>
+                                                    <div class="invalid-feedback">
+                                                        Please enter a valid email address.
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="modalRole">User role:</label>
+                                                    <select class="form-control" id="modalRole" name="role">
+                                                        <option value="USER">USER</option>
+                                                        <option value="ADMIN">ADMIN</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary btn-block mt-5 mb-3">
+                                                        Save
+                                                    </button>
+                                                </div>
                                             </form>
                                         </div>
                                         <!-- Modal footer -->
@@ -184,8 +201,6 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <!--                                        <input type="text" class="form-control" id="role" placeholder="Role"-->
-                                        <!--                                               name="role" autocomplete="off">-->
                                         <button type="submit" class="btn btn-primary px-5 mt-4">Submit</button>
                                     </div>
                                 </form>

@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -73,8 +74,17 @@ public class User implements UserDetails {
 
     /* (?) */
     public void setAuthorities(Set<Authority> authorities) {
-        authorities.forEach(authority -> authority.setUser(this));
-        this.authorities = authorities;
+//        authorities.forEach(authority -> authority.setUser(this));
+        Iterator<Authority> iterOld = this.authorities.iterator();
+        Iterator<Authority> iterNew = authorities.iterator();
+
+        while (iterOld.hasNext() && iterNew.hasNext()) {
+            iterOld.next().setAuthority(iterNew.next().getAuthority());
+        }
+        while (iterOld.hasNext()) {
+            iterOld.remove();
+        }
+
         role = authorities.stream()
                 .anyMatch(authority -> authority.getAuthority()
                         .equals(Role.ADMIN.getAuthorityString())) ? Role.ADMIN : Role.USER;

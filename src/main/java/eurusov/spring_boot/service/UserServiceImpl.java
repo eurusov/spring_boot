@@ -55,6 +55,7 @@ public class UserServiceImpl implements UserService {
         persistent.setEmail(user.getEmail());
         persistent.setFirstName(user.getFirstName());
         persistent.setLastName(user.getLastName());
+        persistent.setAuthorities(user.getAuthorities());
         return true;
     }
 
