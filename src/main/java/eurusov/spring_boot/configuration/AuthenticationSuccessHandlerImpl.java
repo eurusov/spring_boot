@@ -1,5 +1,6 @@
 package eurusov.spring_boot.configuration;
 
+import eurusov.spring_boot.model.Role;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -16,13 +17,10 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         Set<String> roles = AuthorityUtils.authorityListToSet(authentication.getAuthorities());
-        System.out.println(roles);
-        if (roles.contains("ROLE_ADMIN")) {
+        if (roles.contains(Role.ADMIN.authorityString())) {
             response.sendRedirect("/admin");
-            System.out.println("ADMIN");
         } else {
             response.sendRedirect("/user");
-            System.out.println("USER");
         }
     }
 }

@@ -8,12 +8,16 @@ public interface UserService {
 
     boolean addUser(User user);
 
-    User getUserByUsername(String username);
+    boolean existsByUsername(String username);
+
+    User getOneWithAuthorities(Long userId);
+
+    User getUserWithAuthorities(String username);
 
     List<User> getUserList();
 
     boolean updateUser(User user);
 
-    boolean deleteUser(String username);
+    boolean deleteUser(Long userId);
 
 }

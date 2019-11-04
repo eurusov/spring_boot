@@ -1,57 +1,66 @@
 package eurusov.spring_boot.service;
 
-import eurusov.spring_boot.model.Authority;
 import eurusov.spring_boot.model.User;
 import eurusov.spring_boot.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service("userService")
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    @Autowired
-    public void setUserRepository(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Transactional
     @Override
     public boolean addUser(User user) {
-        if (userRepository.existsById(user.getUsername())) {
+        if (userRepository.existsByUsername(user.getUsername())) {
             return false;
         }
         userRepository.save(user);
         return true;
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public User getUserByUsername(String username) {
-        if (!userRepository.existsById(username)) {
-            return null;
-        }
-        return userRepository.getOneWithAuthorities(username);
+    @Transactional(readOnly = true)
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
-    @Transactional(readOnly = true)
     @Override
+    @Transactional(readOnly = true)
+    public User getOneWithAuthorities(Long userId) {
+        return userRepository.existsById(userId)
+                ? userRepository.getOneWithAuthorities(userId)
+                : null;
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public User getUserWithAuthorities(String username) {
+        return userRepository.existsByUsername(username)
+                ? userRepository.getUserWithAuthorities(username)
+                : null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<User> getUserList() {
         return userRepository.getUserList();
     }
 
-    @Transactional
     @Override
+    @Transactional
     public boolean updateUser(User user) {
-        String username = user.getUsername();
-        if (!userRepository.existsById(username)) {
+        Long userId = user.getId();
+        if (!userRepository.existsById(userId)) {
             return false;
         }
-        User persistent = userRepository.getOne(username);
+        User persistent = userRepository.getOne(userId);
         persistent.setEmail(user.getEmail());
         persistent.setFirstName(user.getFirstName());
         persistent.setLastName(user.getLastName());
@@ -59,13 +68,10 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    @Transactional
     @Override
-    public boolean deleteUser(String username) {
-        if (!userRepository.existsById(username)) {
-            return false;
-        }
-        userRepository.deleteById(username);
+    @Transactional
+    public boolean deleteUser(Long userId) {
+        userRepository.deleteById(userId);
         return true;
     }
 }

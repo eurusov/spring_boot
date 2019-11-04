@@ -2,6 +2,7 @@ package eurusov.spring_boot.model;
 
 public enum Role {
     ADMIN("ROLE_ADMIN"),
+    MANAGER("ROLE_MANAGER"),
     USER("ROLE_USER");
 
     private String authorityString;
@@ -10,7 +11,7 @@ public enum Role {
         authorityString = role;
     }
 
-    public String getAuthorityString() {
+    public String authorityString() {
         return authorityString;
     }
 }

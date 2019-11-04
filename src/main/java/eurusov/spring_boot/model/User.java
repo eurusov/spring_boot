@@ -1,13 +1,11 @@
 package eurusov.spring_boot.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -17,19 +15,19 @@ import java.util.Set;
 @Getter
 @Setter
 public class User implements UserDetails {
-    // ~ Instance fields
-    // ================================================================================================
-    @Column(name = "user_id", unique = true, nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Setter(AccessLevel.NONE)
-    private Long userId;
-
     @Id
-    @Column(name = "username", unique = true, nullable = false)
+    @Setter(AccessLevel.NONE)
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotEmpty
     @EqualsAndHashCode.Include
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "password", nullable = false)
+    @NotEmpty
+    @Column(name = "password")
     private String password;
 
     @Column(name = "first_name")
@@ -41,69 +39,22 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled = true;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Transient
-    private Role role;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "user_authorities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "authority_id"))
     private Set<Authority> authorities = new HashSet<>();
 
-    /* Used in view representation of user */
-    public Role getRole() {
-        if (role == null) {
-            role = authorities.stream()
-                    .anyMatch(authority -> authority.getAuthority()
-                            .equals(Role.ADMIN.getAuthorityString())) ? Role.ADMIN : Role.USER;
-        }
-        return role;
-    }
-
-    /*
-     * Used when a user object is retrieved from view. Setting up authorities.
-     * This method is called automatically before the AdminApiController gets the User object from the view.
-     * */
-    public void setRole(Role role) {
-        this.role = role;
-        authorities = new HashSet<>();
-        authorities.add(new Authority(this, role));
-    }
-
-    /* (?) */
-    public void setAuthorities(Set<Authority> authorities) {
-//        authorities.forEach(authority -> authority.setUser(this));
-        Iterator<Authority> iterOld = this.authorities.iterator();
-        Iterator<Authority> iterNew = authorities.iterator();
-
-        while (iterOld.hasNext() && iterNew.hasNext()) {
-            iterOld.next().setAuthority(iterNew.next().getAuthority());
-        }
-        while (iterOld.hasNext()) {
-            iterOld.remove();
-        }
-
-        role = authorities.stream()
-                .anyMatch(authority -> authority.getAuthority()
-                        .equals(Role.ADMIN.getAuthorityString())) ? Role.ADMIN : Role.USER;
-    }
-
-    // ~ Implements UserDetails
-    // ================================================================================================
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private boolean enabled = true;
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private boolean accountNonExpired = true;
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private boolean accountNonLocked = true;
+    @Transient
+    @Setter(AccessLevel.NONE)
+    private boolean credentialsNonExpired = true;
 }

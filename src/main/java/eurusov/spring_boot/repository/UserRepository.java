@@ -9,12 +9,17 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, String> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
-    @Query("select u from User u join fetch u.authorities a order by u.userId")
+    @Query("select distinct u from User u left join fetch u.authorities a order by u.id")
     List<User> getUserList();
 
-    @Query("select u from User u join fetch u.authorities a where u.username = :username")
-    User getOneWithAuthorities(@Param("username") String username);
+    @Query("select u from User u left join fetch u.authorities a where u.username = :username")
+    User getUserWithAuthorities(@Param("username") String username);
+
+    @Query("select u from User u left join fetch u.authorities a where u.id = :userId")
+    User getOneWithAuthorities(@Param("userId") Long userId);
+
+    boolean existsByUsername(String username);
 
 }

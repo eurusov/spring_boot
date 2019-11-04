@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component(value = "UserSecurityService")
 public class UserSecurityService implements UserDetailsService {
+
     private UserRepository userRepository;
 
     @Autowired
@@ -20,6 +21,6 @@ public class UserSecurityService implements UserDetailsService {
     @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.getOneWithAuthorities(username);
+        return userRepository.getUserWithAuthorities(username);
     }
 }

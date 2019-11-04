@@ -5,39 +5,39 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 @Entity
 @Table(name = "authorities")
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @NoArgsConstructor
 public class Authority implements GrantedAuthority {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "authority_id")
     @Setter(AccessLevel.NONE)
-    private Long authorityId;
+    @EqualsAndHashCode.Include
+    @Column(name = "authority_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
-    @Column(name = "authority")
+    @NotEmpty
+//    @EqualsAndHashCode.Include
+    @Column(name = "authority", unique = true, nullable = false)
     private String authority;
 
-    @ManyToOne
-    @JoinColumn(name = "username")
-    @ToString.Exclude
+    @Column(name = "sort_order", unique = true, nullable = false)
+    private Integer sortOrder;
+
     @JsonIgnore
-    private User user;
+    @ToString.Exclude
+    @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)
+    private Set<User> users;
 
-    // Constructor (?)
-//    public Authority(User user) {
-//        this.user = user;
-//        authority = user.getRole().getAuthorityString();
-//    }
-
-    // Constructor
-    public Authority(User user, Role role) {
-        this.user = user;
-        this.authority = role.getAuthorityString();
+    public Authority(String authority, Integer sortOrder) {
+        this.authority = authority;
+        this.sortOrder = sortOrder;
     }
 }
