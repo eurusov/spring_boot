@@ -1,7 +1,7 @@
 export function fillPrincipalTable(user) {
     let table = $('#principalTable');
     parseAuthToRoles(user);
-    table.find('#loggedUserId').text(user.userId);
+    table.find('#loggedUserId').text(user.id);
     table.find('#loggedUsername').text(user.username);
     table.find('#loggedUserFirstName').text(user.firstName);
     table.find('#loggedUserLastName').text(user.lastName);
@@ -15,9 +15,6 @@ export function parseAuthToRoles(user) {
         roles[i] = roleFromAuthority(user.authorities[i]);
     }
     user.roles = roles.join(', ');
-
-    // console.log("=========== parseAuthToRoles : after : ")
-    // console.log(user);
 }
 
 export function roleFromAuthority(authority) {

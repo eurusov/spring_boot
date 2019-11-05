@@ -20,7 +20,10 @@ import {roleFromAuthority} from "/js/func.js";
 //     }, false);
 // })();
 
-let _authorities_global;
+$(document).ajaxError(function (event, resp, settings, thrownError) {
+    console.error("An error occurred while processing AJAX request!")
+    console.error(resp.responseText);
+});
 
 $(document).ready(function () {
         // register the function that intercepts a 'new user' form submit event
@@ -147,25 +150,23 @@ function redrawTable(users) {
 }
 
 function completeCheckboxes(authorities) {
-    let form = $("#authSelectorModal");
-    form.find("div").remove();
-    $.each(authorities, function (index, authority) {
-        let role = roleFromAuthority(authority);
-        let authId = authority.id;
-        form.append(
-            `<div class="custom-control custom-checkbox">
-    <input type="checkbox" class="custom-control-input authCheckboxes" id="modalAuthCheck_${authId}"
-           name="modalAuthCheck_${authId}" value="${authority.id}">
-    <label class="custom-control-label" for="modalAuthCheck_${authId}">${role}</label>
-</div>`)
+    let form = $(".authSelector");
+    form.empty();
+    form.append(function (i) {
+        return jQuery.map(authorities, function (auth) {
+            let role = roleFromAuthority(auth);
+            return `<div class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input authCheckbox" id="authCheck_${i}_${auth.id}"
+           name="id" value="${auth.id}">
+    <label class="custom-control-label" for="authCheck_${i}_${auth.id}">${role}</label>
+</div>`
+        })
     });
 }
 
 function getUserFromForm(form) {
-    let checkboxes = form.find(".authCheckboxes").filter(function (idx, element) {
-        return element.checked === true;
-    });
-    let auths = $.map(checkboxes, function (elem) {
+    let checkboxes = form.find(".authCheckbox:checked");
+    let authorities = $.map(checkboxes, function (elem) {
         return {
             id: elem.getAttribute("value")
         }
@@ -177,7 +178,7 @@ function getUserFromForm(form) {
         firstName: form.find("input[name='firstName']").val(),
         lastName: form.find("input[name='lastName']").val(),
         email: form.find("input[name='email']").val(),
-        authorities: auths
+        authorities: authorities
     };
     return userData;
 }
@@ -186,18 +187,16 @@ function showModal(user) {
     let modalDiv = $("#modalEditDialog");
     modalDiv.on('show.bs.modal', function () {
         modalDiv.find('#modalUserId').val(user.id);
-        modalDiv.find('#hiddenUsername').val(user.username);
         modalDiv.find('#modalUsername').val(user.username);
         modalDiv.find('#modalFirstName').val(user.firstName);
         modalDiv.find('#modalLastName').val(user.lastName);
         modalDiv.find('#modalEmail').val(user.email);
         modalDiv.find('#modalRole').val(user.role);
 
-        modalDiv.find(".authCheckboxes").prop("checked", false);
+        modalDiv.find(".authCheckbox").prop("checked", false);
 
         $.each(user.authorities, function (index, a) {
-            let selector = "#modalAuthCheck_" + a.id;
-            $(selector).prop("checked", true);
+            modalDiv.find(`.authCheckbox[value=${a.id}]`).prop("checked", true);
         });
     });
     modalDiv.modal('show');
