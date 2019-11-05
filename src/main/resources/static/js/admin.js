@@ -10,7 +10,6 @@ import {roleFromAuthority} from "/js/func.js";
 //         // Loop over them and prevent submission
 //         let validation = Array.prototype.filter.call(forms, function(form) {
 //             form.addEventListener('submit', function(event) {
-//                 console.log("submit");
 //                 if (form.checkValidity() === false) {
 //                     event.preventDefault();
 //                     event.stopPropagation();
@@ -35,7 +34,6 @@ $(document).ready(function () {
 
         // register the function that intercepts a 'edit user' form submit event
         $("#editUserForm").on("submit", function (event) {
-            console.log("editUserForm submit clicked")
             event.preventDefault();
             if (this.checkValidity() === true) {
                 onModalSubmitClick();
@@ -54,15 +52,9 @@ $(document).ready(function () {
 );
 
 function ajaxGetAllAuthorities(onSuccess) {
-    // console.log("==================================================================");
-    // console.log("=== ajaxGetAllAuthorities | getting authorities array");
     $.ajax({
         url: '/api/authorities',
-        success: function (authorities) {
-            // console.log("=== ajaxGetAllAuthorities (callback) | successfully got authorities array:");
-            // console.log(authorities);
-            onSuccess(authorities);
-        }
+        success: onSuccess
     });
 }
 
@@ -74,61 +66,39 @@ function ajaxGetAllUsersAndRedrawTable() {
 }
 
 function ajaxGetUserById(userId, onSuccess) {
-    console.log("==================================================================");
-    console.log("=== ajaxGetUserById | getting user with id=" + userId);
     $.ajax({
         url: '/api/user/' + userId,
-        success: function (user) {
-            console.log("=== ajaxGetUserById (callback) | successfully got user with id=" + userId);
-            console.log(user);
-            onSuccess(user);
-        }
+        success: onSuccess
     });
 }
 
 function ajaxSaveNewUser(user, onSuccess) {
-    // console.log("==================================================================");
-    // console.log("=== ajaxSaveNewUser | save new user with name=" + user.username);
     $.ajax({
         type: "POST",
         contentType: "application/json",
         url: "/api/add",
         data: JSON.stringify(user),
         dataType: 'json',
-        success: function (users) {
-            // console.log("=== ajaxSaveNewUser (callback) | successfully created user with name=" + user.username);
-            onSuccess(users)
-        }
+        success: onSuccess
     });
 }
 
 function ajaxUpdateUser(user, onSuccess) {
-    // console.log("==================================================================");
-    // console.log("=== ajaxUpdateUser | updating user with id=" + user.id);
-    // console.log(user);
     $.ajax({
         type: "PUT",
         contentType: "application/json",
         url: "/api/update",
         data: JSON.stringify(user),
         dataType: 'json',
-        success: function (users) {
-            // console.log("=== ajaxUpdateUser (callback) | successfully updated user with id=" + user.id);
-            onSuccess(users)
-        }
+        success: onSuccess
     });
 }
 
 function ajaxDeleteUser(userId, onSuccess) {
-    // console.log("==================================================================");
-    // console.log("=== ajaxDeleteUser | deleting user with id=" + userId);
     $.ajax({
         url: '/api/delete/' + userId,
         method: "DELETE",
-        success: function (users) {
-            // console.log("=== ajaxDeleteUser (callback) | successfully deleted user with id=" + userId);
-            onSuccess(users)
-        }
+        success: onSuccess
     });
 }
 
@@ -165,9 +135,6 @@ function onSaveNewClick() {
 }
 
 function redrawTable(users) {
-    // console.log("=========== completeTable : before : ")
-    // console.log(users);
-
     let table = $('#userTable');
     table.hide();
     table.find("tbody tr").remove();
@@ -177,53 +144,32 @@ function redrawTable(users) {
     $('.usrEditBtn').click(onEditClick);
     $('.usrDeleteBtn').click(onDeleteClick);
     table.show();
-
-    // console.log("=========== completeTable : after : ");
-    // console.log(users);
 }
 
 function completeCheckboxes(authorities) {
-    // console.log("=========== completeCheckboxes : before : ");
-    // console.log("authorities:");
-    // console.log(authorities);
     let form = $("#authSelectorModal");
-    // console.log("form:");
-    // console.log(form);
     form.find("div").remove();
     $.each(authorities, function (index, authority) {
-        // console.log("authority:");
-        // console.log(authority);
         let role = roleFromAuthority(authority);
-        // console.log("role: " + role);
         let authId = authority.id;
         form.append(
             `<div class="custom-control custom-checkbox">
-<input type="checkbox" class="custom-control-input authCheckboxes" id="modalAuthCheck_${authId}" name="modalAuthCheck_${authId}" value="${authority.id}">
-<label class="custom-control-label" for="modalAuthCheck_${authId}">${role}</label>
+    <input type="checkbox" class="custom-control-input authCheckboxes" id="modalAuthCheck_${authId}"
+           name="modalAuthCheck_${authId}" value="${authority.id}">
+    <label class="custom-control-label" for="modalAuthCheck_${authId}">${role}</label>
 </div>`)
     });
 }
 
 function getUserFromForm(form) {
-    // let role = "ROLE_" + form.find("select[name='role']").val();
-    // let authorities = _authorities_global.filter(a => a.authority === role);
-    console.log("=========== getUserFromForm : authorities filtered : ");
-    // console.log(authorities);
-
     let checkboxes = form.find(".authCheckboxes").filter(function (idx, element) {
         return element.checked === true;
     });
-
-    console.log("filtered checkboxes:");
-    console.log(checkboxes);
-
     let auths = $.map(checkboxes, function (elem) {
         return {
             id: elem.getAttribute("value")
         }
     });
-    console.log(auths);
-
     let userData = {
         id: form.find("input[name='userId']").val(),
         username: form.find("input[name='username']").val(),
@@ -233,7 +179,6 @@ function getUserFromForm(form) {
         email: form.find("input[name='email']").val(),
         authorities: auths
     };
-    console.log(userData);
     return userData;
 }
 
@@ -259,8 +204,6 @@ function showModal(user) {
 }
 
 function tableAppendRow(user) {
-    // console.log("=========== tableAppendRow : before : ")
-    // console.log(user);
     parseAuthToRoles(user);
     let table = $('#userTable');
     table.append(
